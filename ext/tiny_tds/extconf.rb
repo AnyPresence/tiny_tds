@@ -4,10 +4,18 @@ ENV['RC_ARCHS'] = '' if RUBY_PLATFORM =~ /darwin/
 
 require 'mkmf'
 
-# Shamelessly copied from nokogiri
-#
-LIBDIR     = RbConfig::CONFIG['libdir']
-INCLUDEDIR = RbConfig::CONFIG['includedir']
+FREETDSDIR = ENV['FREETDS_DIR']
+
+if FREETDSDIR.nil? || FREETDSDIR.empty?
+  # Shamelessly copied from nokogiri
+  #
+  LIBDIR     = RbConfig::CONFIG['libdir']
+  INCLUDEDIR = RbConfig::CONFIG['includedir']
+else
+  puts "Will use #{FREETDSDIR}"
+  LIBDIR = "#{FREETDSDIR}/lib"
+  INCLUDEDIR = "#{FREETDSDIR}/include"
+end
 
 $CFLAGS  << " #{ENV["CFLAGS"]}"
 $LDFLAGS << " #{ENV["LDFLAGS"]}"
